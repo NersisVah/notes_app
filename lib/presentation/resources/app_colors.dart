@@ -5,5 +5,9 @@ class AppColors {
 
   static const Color scaffoldBackground = Color(0xFF252525);
   static const Color primary = Color(0xFFFFD700);
-  static const Color noteCard = Color(0xFF14141C);
+  static const Color secondaryBackground = Color(0xFF3B3B3B);
+  static const Color white = Color(0xFFFFFFFF);
+  static const Color red = Color(0xFFFF5252);
+  static const Color green = Color(0xFF4CAF50);
+  static const Color shadow = Color(0x8A000000);
 }

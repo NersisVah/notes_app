@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../global_blocs/notes/notes_bloc.dart';
+import '../../screens/home/view/home_screen_view.dart';
+import '../../screens/note_editor/view/note_editor_screen_view.dart';
+import '../../screens/note_editor/view_model/note_editor_cubit.dart';
 import 'app_routes.dart';
 
 class AppRouter {
@@ -11,8 +16,7 @@ class AppRouter {
     routes: [
       GoRoute(
         path: AppRoutes.home,
-        // TODO: replace with HomePage
-        builder: (context, state) => const _PlaceholderPage('Home'),
+        builder: (context, state) => const HomeScreenView(),
       ),
       GoRoute(
         path: AppRoutes.search,
@@ -20,15 +24,20 @@ class AppRouter {
         builder: (context, state) => const _PlaceholderPage('Search'),
       ),
       GoRoute(
-        path: AppRoutes.newNote,
-        // TODO: replace with NotePage for a new note
-        builder: (context, state) => const _PlaceholderPage('New note'),
-      ),
-      GoRoute(
         path: AppRoutes.note,
-        // TODO: replace with NotePage, passing state.pathParameters['id']
-        builder: (context, state) =>
-            _PlaceholderPage('Note ${state.pathParameters['id']}'),
+        builder: (context, state) {
+          final noteId = state.uri.queryParameters[AppRoutes.noteIdParam];
+          final note = context
+              .read<NotesBloc>()
+              .state
+              .notes
+              .where((note) => note.id == noteId)
+              .firstOrNull;
+          return BlocProvider<NoteEditorCubit>(
+            create: (_) => NoteEditorCubit(note: note),
+            child: NoteEditorScreenView(noteId: noteId),
+          );
+        },
       ),
     ],
   );
