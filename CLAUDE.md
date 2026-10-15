@@ -42,6 +42,17 @@ Widget tests that pump `NoteApp` set `HydratedBloc.storage = MemoryStorage()` (`
   - `components/`: custom widgets used only by this screen. Create it only when such a widget exists. Widgets shared between screens go in `presentation/widgets/`.
 - **`presentation/widgets/`**: shared widgets. `StyledText(text, size: AppTextSize.small|medium|large)` is the text widget to use. It maps sizes to the theme's `bodyMedium`/`titleMedium`/`titleLarge`, which come from `AppFontSizes`.
 
+## Text sizes
+
+Text uses `StyledText(text, size: AppTextSize.small|medium|large)`; text fields can't, so they take the same styles from `Theme.of(context).textTheme` (`titleLarge` = large, `titleMedium` = medium, `bodyMedium` = small). The values live only in `AppFontSizes`.
+
+| Size | Used for |
+|---|---|
+| `large` | Screen titles (AppBar), the note title on the details screen, the title field in the editor |
+| `medium` | Note card titles, headings inside sheets and dialogs ("Welcome to Notes") |
+| `small` | All body text: note body, body and search fields, pills, sort options, dialog messages and buttons, info rows, empty-state messages |
+| `small` + `AppColors.grey` | Secondary text: subtitles and descriptions |
+
 ## Spacing and radii
 
 Every padding, gap and radius comes from `AppSizes`; never hard-code numbers. Spacing follows three rules, one per size:

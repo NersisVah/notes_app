@@ -225,22 +225,31 @@ class HomeScreenView extends StatelessWidget {
               child: BlocBuilder<HomeScreenCubit, HomeScreenState>(
                 buildWhen: (previous, current) =>
                     previous.filter != current.filter,
-                builder: (context, homeState) => Row(
+                // Filters on the left, sort button on the right. With very
+                // large text the sort button wraps onto its own line.
+                builder: (context, homeState) => Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  runSpacing: AppSizes.paddingSmall,
                   children: [
-                    _selectableContainer(
-                      context,
-                      'All',
-                      NotesFilter.all,
-                      homeState.filter,
+                    Wrap(
+                      spacing: AppSizes.paddingSmall,
+                      runSpacing: AppSizes.paddingSmall,
+                      children: [
+                        _selectableContainer(
+                          context,
+                          'All',
+                          NotesFilter.all,
+                          homeState.filter,
+                        ),
+                        _selectableContainer(
+                          context,
+                          'Favorites',
+                          NotesFilter.favorites,
+                          homeState.filter,
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: AppSizes.paddingSmall),
-                    _selectableContainer(
-                      context,
-                      'Favorites',
-                      NotesFilter.favorites,
-                      homeState.filter,
-                    ),
-                    const Spacer(),
                     IconButton(
                       icon: const Icon(Icons.sort),
                       onPressed: () => _showSortSheet(context),
@@ -263,7 +272,7 @@ class HomeScreenView extends StatelessWidget {
                               homeState.filter == NotesFilter.all
                                   ? 'Create your first note!'
                                   : 'No favorite notes yet.',
-                              size: AppTextSize.medium,
+                              size: AppTextSize.small,
                             ),
                           );
                         }

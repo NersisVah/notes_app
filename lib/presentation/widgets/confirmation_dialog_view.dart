@@ -44,7 +44,9 @@ class ConfirmationDialogView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: Padding(
+      // Scrolls only when the content is taller than the screen, for example
+      // with a large system font.
+      child: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSizes.paddingLarge),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -115,7 +117,12 @@ class _DialogButton extends StatelessWidget {
         ),
       ),
       onPressed: onPressed,
-      child: StyledText(label, size: AppTextSize.small, color: labelColor),
+      child: StyledText(
+        label,
+        size: AppTextSize.small,
+        color: labelColor,
+        textAlign: TextAlign.center,
+      ),
     );
   }
 }
