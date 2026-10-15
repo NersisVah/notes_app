@@ -91,11 +91,15 @@ class NoteEditorScreenView extends StatelessWidget {
             ),
           ],
         ),
-        body: BlocBuilder<NoteEditorCubit, NoteEditorState>(
-          buildWhen: (previous, current) => previous.mode != current.mode,
-          builder: (context, state) => state.isEditing
-              ? const NoteFormView()
-              : NoteContentView(title: state.title, body: state.body),
+        body: SafeArea(
+          top: false,
+          bottom: false,
+          child: BlocBuilder<NoteEditorCubit, NoteEditorState>(
+            buildWhen: (previous, current) => previous.mode != current.mode,
+            builder: (context, state) => state.isEditing
+                ? const NoteFormView()
+                : NoteContentView(title: state.title, body: state.body),
+          ),
         ),
       ),
     );

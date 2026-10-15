@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../global_blocs/notes/notes_bloc.dart';
 import '../../screens/home/view/home_screen_view.dart';
+import '../../screens/home/view_model/home_screen_cubit.dart';
 import '../../screens/note_editor/view/note_editor_screen_view.dart';
 import '../../screens/note_editor/view_model/note_editor_cubit.dart';
 import 'app_routes.dart';
@@ -16,7 +17,10 @@ class AppRouter {
     routes: [
       GoRoute(
         path: AppRoutes.home,
-        builder: (context, state) => const HomeScreenView(),
+        builder: (context, state) => BlocProvider<HomeScreenCubit>(
+          create: (_) => HomeScreenCubit(),
+          child: const HomeScreenView(),
+        ),
       ),
       GoRoute(
         path: AppRoutes.search,

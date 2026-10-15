@@ -57,18 +57,21 @@ class ConfirmationDialogView extends StatelessWidget {
             ),
             const SizedBox(height: AppSizes.paddingLarge),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _DialogButton(
-                  label: cancelLabel,
-                  color: AppColors.red,
-                  onPressed: () => Navigator.of(context).pop(false),
+                Expanded(
+                  child: _DialogButton(
+                    label: cancelLabel,
+                    color: AppColors.red,
+                    onPressed: () => Navigator.of(context).pop(false),
+                  ),
                 ),
                 const SizedBox(width: AppSizes.paddingMedium),
-                _DialogButton(
-                  label: confirmLabel,
-                  color: AppColors.green,
-                  onPressed: () => Navigator.of(context).pop(true),
+                Expanded(
+                  child: _DialogButton(
+                    label: confirmLabel,
+                    color: AppColors.green,
+                    onPressed: () => Navigator.of(context).pop(true),
+                  ),
                 ),
               ],
             ),

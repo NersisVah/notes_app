@@ -19,14 +19,20 @@ class NoteEditorCubit extends Cubit<NoteEditorState> {
       );
 
   void toggleMode() {
-    emit(
-      state.copyWith(
-        mode: state.isEditing ? NoteEditorMode.view : NoteEditorMode.edit,
-      ),
-    );
+    if (!isClosed) {
+      emit(
+        state.copyWith(
+          mode: state.isEditing ? NoteEditorMode.view : NoteEditorMode.edit,
+        ),
+      );
+    }
   }
 
-  void titleChanged(String title) => emit(state.copyWith(title: title));
+  void titleChanged(String title) {
+    if (!isClosed) emit(state.copyWith(title: title));
+  }
 
-  void bodyChanged(String body) => emit(state.copyWith(body: body));
+  void bodyChanged(String body) {
+    if (!isClosed) emit(state.copyWith(body: body));
+  }
 }

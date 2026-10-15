@@ -12,8 +12,11 @@ class AppSizes {
   static const double borderWidth = 1;
   static const double borderWidthFocused = 2;
 
-  static const double fabIconSize = 28;
+  static const double floatingActionButtonIconSize = 36;
   static const double dialogIconSize = 36;
 
-  static const double shadowBlurRadius = 4;
+  static const double floatingActionButtonIconShadowBlurRadius = 12;
+
+  static const double noteCardActionWidth = 80;
+  static const double noteCardElevation = 2;
 }

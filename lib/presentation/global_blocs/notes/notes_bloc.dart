@@ -17,7 +17,6 @@ class NotesBloc extends HydratedBloc<NotesEvent, NotesState> {
     on<NoteUpdated>(_onNoteUpdated);
     on<NoteDeleted>(_onNoteDeleted);
     on<NoteFavoriteToggled>(_onNoteFavoriteToggled);
-    on<NotesSortChanged>(_onNotesSortChanged);
   }
 
   final Uuid _uuid;
@@ -75,10 +74,6 @@ class NotesBloc extends HydratedBloc<NotesEvent, NotesState> {
         ],
       ),
     );
-  }
-
-  void _onNotesSortChanged(NotesSortChanged event, Emitter<NotesState> emit) {
-    emit(state.copyWith(sortBy: event.sortBy));
   }
 
   @override

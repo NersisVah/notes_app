@@ -34,9 +34,3 @@ final class NoteFavoriteToggled extends NotesEvent {
 
   final String id;
 }
-
-final class NotesSortChanged extends NotesEvent {
-  const NotesSortChanged(this.sortBy);
-
-  final NotesSortBy sortBy;
-}

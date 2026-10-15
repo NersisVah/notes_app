@@ -12,18 +12,7 @@ NotesState _$NotesStateFromJson(Map<String, dynamic> json) => NotesState(
           ?.map((e) => NoteModel.fromJson(e as Map<String, dynamic>))
           .toList() ??
       const [],
-  sortBy:
-      $enumDecodeNullable(_$NotesSortByEnumMap, json['sortBy']) ??
-      NotesSortBy.updatedAt,
 );
 
 Map<String, dynamic> _$NotesStateToJson(NotesState instance) =>
-    <String, dynamic>{
-      'notes': instance.notes.map((e) => e.toJson()).toList(),
-      'sortBy': _$NotesSortByEnumMap[instance.sortBy]!,
-    };
-
-const _$NotesSortByEnumMap = {
-  NotesSortBy.createdAt: 'createdAt',
-  NotesSortBy.updatedAt: 'updatedAt',
-};
+    <String, dynamic>{'notes': instance.notes.map((e) => e.toJson()).toList()};

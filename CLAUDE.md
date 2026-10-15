@@ -28,7 +28,7 @@ Generated `*.g.dart` files are committed. Regenerate them, never edit them by ha
 `lib/` is split into `core/`, `data/`, `domain/`, `presentation/`. In practice, persistence is **HydratedBloc only**: there are no repositories, use cases or data sources, so don't add them.
 
 - **`domain/model/note_model.dart`**: `NoteModel` (`id`, `title`, `body`, `createdAt`, `updatedAt`, `isFavorite`). `@JsonSerializable` with a hand-written `copyWith` and `==`/`hashCode`. Title and body are plain strings, with no rich text or markdown.
-- **`presentation/global_blocs/notes/`**: `NotesBloc extends HydratedBloc`, the single source of truth for notes. Events and state are `part` files of `notes_bloc.dart`, so the generated `notes_bloc.g.dart` serializes `NotesState` (`notes`, `sortBy`). Derived lists (`sortedNotes`, `favoriteNotes`) are getters on the state.
+- **`presentation/global_blocs/notes/`**: `NotesBloc extends HydratedBloc`, the single source of truth for notes. Events and state are `part` files of `notes_bloc.dart`, so the generated `notes_bloc.g.dart` serializes `NotesState`, which persists only `notes`. View preferences such as the Home filter and sort order are not persisted; they live in the screen's cubit (`HomeScreenCubit`, which filters and sorts with `HomeScreenState.visibleNotes`).
 - **`main.dart`**: initializes `HydratedBloc.storage`, using the documents directory, or web storage on web.
 - **`presentation/app.dart`**: `NoteApp` wraps `MaterialApp.router` in `BlocProvider<NotesBloc>`, so the bloc is global to every route.
 - **`presentation/utils/router/`**: `AppRoutes` holds the path constants and `AppRouter.router` the go_router config. Routes without a real screen yet use `_PlaceholderPage` with a TODO. `/note` serves both create and edit: no `id` query parameter means create (`AppRoutes.note` / `AppRoutes.noteById(id)`).
@@ -45,8 +45,11 @@ Generated `*.g.dart` files are committed. Regenerate them, never edit them by ha
 - Screen classes and files end in `View` / `_view.dart` (e.g. `HomeScreenView`). `StyledText` is a deliberate exception. Ask before naming new shared widgets.
 - No third-party UI packages. All UI comes from the Flutter SDK.
 - No tooltips on any widget.
-- Always ask the user which scrolling widget to use (`SingleChildScrollView`, `ListView`, `ListView.builder`, slivers, ...) before adding scrolling. Short forms of `TextFormField`s use `SingleChildScrollView` + `Column`: a lazy `ListView` disposes off-screen unfocused fields and rebuilds them from a stale `initialValue`.
+- Always ask before setting `maxLines` or `overflow` (ellipsis, fade, clip, ...) on any text.
+- Always ask which scrolling widget to use (`SingleChildScrollView`, `ListView`, `ListView.builder`, slivers, ...) before adding scrolling. Short forms of `TextFormField`s use `SingleChildScrollView` + `Column`: a lazy `ListView` disposes off-screen unfocused fields and rebuilds them from a stale `initialValue`.
 - No `Dismissible`. Swipe to delete must be custom (e.g. `GestureDetector` + `AnimationController`).
 - Resource classes and `ThemeManager` use a private constructor (`ClassName._()`).
 - Imports within `lib/` are relative.
+- Don't use `context.watch`/`context.select` to listen to blocs; listen with `BlocBuilder`/`BlocSelector` placed around the exact widgets that depend on the state. `context.read` is fine for dispatching events and calling cubit methods.
+- In every Cubit, guard each `emit(...)` with `if (!isClosed)`. Blocs don't need it: their event handlers emit through the `Emitter`, which already ignores emits after the bloc is closed.
 - Always give bloc widgets an explicit generic type: `BlocProvider<NotesBloc>(...)`, `BlocBuilder<NoteEditorCubit, NoteEditorState>(...)`, `context.read<NotesBloc>()`.

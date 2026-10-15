@@ -10,12 +10,15 @@ class ThemeManager {
   static ThemeData getTheme() {
     return ThemeData(
       primaryColor: AppColors.primary,
+      splashFactory: NoSplash.splashFactory,
+      highlightColor: Colors.transparent,
       colorScheme: _colorScheme(),
       scaffoldBackgroundColor: AppColors.scaffoldBackground,
       appBarTheme: _appBarTheme(),
       floatingActionButtonTheme: _floatingActionButtonTheme(),
       iconButtonTheme: _iconButtonTheme(),
       dialogTheme: _dialogTheme(),
+      bottomSheetTheme: _bottomSheetTheme(),
       textSelectionTheme: _textSelectionTheme(),
       inputDecorationTheme: _inputDecorationTheme(),
       textTheme: _textTheme(),
@@ -43,7 +46,7 @@ class ThemeManager {
     return const FloatingActionButtonThemeData(
       backgroundColor: AppColors.primary,
       foregroundColor: AppColors.white,
-      iconSize: AppSizes.fabIconSize,
+      iconSize: AppSizes.floatingActionButtonIconSize,
       shape: CircleBorder(),
     );
   }
@@ -64,6 +67,19 @@ class ThemeManager {
       backgroundColor: AppColors.scaffoldBackground,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppSizes.radiusLarge),
+      ),
+    );
+  }
+
+  static BottomSheetThemeData _bottomSheetTheme() {
+    return const BottomSheetThemeData(
+      backgroundColor: AppColors.secondaryBackground,
+      surfaceTintColor: Colors.transparent,
+      showDragHandle: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(AppSizes.radiusLarge),
+        ),
       ),
     );
   }
