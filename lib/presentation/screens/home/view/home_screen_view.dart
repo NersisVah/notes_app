@@ -196,6 +196,7 @@ class HomeScreenView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Padding(
           padding: EdgeInsets.only(left: AppSizes.paddingLarge),

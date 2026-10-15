@@ -1,0 +1,4 @@
+tags:
+  # Golden image tests in test/golden. Skip them with
+  # `flutter test --exclude-tags golden`.
+  golden:

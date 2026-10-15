@@ -98,3 +98,13 @@
 ### **Confirmation dialog:**
 
 - Add a confirmation dialog for deleting a note.
+
+# Known Issues
+
+### **Icon sizes and spacing don't adapt:**
+
+- Text follows the system text scale factor, but icon sizes and spacing (paddings, gaps and the sizes of buttons and
+  cards) are fixed values. With a large text scale the text grows a lot while icons and spacing stay small, so screens
+  look unbalanced. You can see this in the golden images in `test/golden/` at text scale 3.0.
+- The same spacing and icon sizes are used on every device.
+- The app needs icon sizes and spacing that correspond to the text scale factor and the device's screen size.
