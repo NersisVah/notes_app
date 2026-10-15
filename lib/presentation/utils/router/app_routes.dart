@@ -10,4 +10,10 @@ class AppRoutes {
 
   static String noteById(String id) =>
       Uri(path: note, queryParameters: {noteIdParam: id}).toString();
+
+  /// Read-only note screen with edit, favorite and delete actions.
+  static const String noteDetails = '/note-details';
+
+  static String noteDetailsById(String id) =>
+      Uri(path: noteDetails, queryParameters: {noteIdParam: id}).toString();
 }

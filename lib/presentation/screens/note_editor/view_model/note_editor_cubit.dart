@@ -5,12 +5,12 @@ import '../../../../domain/model/note_model.dart';
 part 'note_editor_state.dart';
 
 class NoteEditorCubit extends Cubit<NoteEditorState> {
-  /// A new note ([note] is null) starts in edit mode, an existing one in view
-  /// mode with its title and body.
+  /// Always starts in edit mode: notes are read on the details screen, and
+  /// the editor is opened only to create or change one.
   NoteEditorCubit({NoteModel? note})
     : super(
         NoteEditorState(
-          mode: note == null ? NoteEditorMode.edit : NoteEditorMode.view,
+          mode: NoteEditorMode.edit,
           title: note?.title ?? '',
           body: note?.body ?? '',
           savedTitle: note?.title ?? '',

@@ -143,8 +143,9 @@ class _SearchScreenViewState extends State<SearchScreenView> {
                               child: NoteCardView(
                                 title: note.title,
                                 isFavorite: note.isFavorite,
-                                onTap: () =>
-                                    context.push(AppRoutes.noteById(note.id)),
+                                onTap: () => context.push(
+                                  AppRoutes.noteDetailsById(note.id),
+                                ),
                                 onFavoriteToggled: () => context
                                     .read<NotesBloc>()
                                     .add(NoteFavoriteToggled(note.id)),

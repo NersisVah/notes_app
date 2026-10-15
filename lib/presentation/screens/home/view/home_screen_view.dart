@@ -195,8 +195,9 @@ class HomeScreenView extends StatelessWidget {
                               title: note.title,
                               isFavorite: note.isFavorite,
                               showHint: note.id == hintNoteId,
-                              onTap: () =>
-                                  context.push(AppRoutes.noteById(note.id)),
+                              onTap: () => context.push(
+                                AppRoutes.noteDetailsById(note.id),
+                              ),
                               onFavoriteToggled: () => context
                                   .read<NotesBloc>()
                                   .add(NoteFavoriteToggled(note.id)),

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../global_blocs/notes/notes_bloc.dart';
 import '../../screens/home/view/home_screen_view.dart';
 import '../../screens/home/view_model/home_screen_cubit.dart';
+import '../../screens/note_details/view/note_details_screen_view.dart';
 import '../../screens/note_editor/view/note_editor_screen_view.dart';
 import '../../screens/note_editor/view_model/note_editor_cubit.dart';
 import '../../screens/search/view/search_screen_view.dart';
@@ -45,6 +46,12 @@ class AppRouter {
             child: NoteEditorScreenView(noteId: noteId),
           );
         },
+      ),
+      GoRoute(
+        path: AppRoutes.noteDetails,
+        builder: (context, state) => NoteDetailsScreenView(
+          noteId: state.uri.queryParameters[AppRoutes.noteIdParam]!,
+        ),
       ),
     ],
   );

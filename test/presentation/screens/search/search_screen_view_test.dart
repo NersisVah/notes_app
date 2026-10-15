@@ -5,6 +5,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:notes_app/presentation/app.dart';
 import 'package:notes_app/presentation/global_blocs/notes/notes_bloc.dart';
 import 'package:notes_app/presentation/screens/home/view/home_screen_view.dart';
+import 'package:notes_app/presentation/screens/note_details/view/note_details_screen_view.dart';
 import 'package:notes_app/presentation/screens/note_editor/view/note_editor_screen_view.dart';
 import 'package:notes_app/presentation/screens/search/view/search_screen_view.dart';
 import 'package:notes_app/presentation/utils/router/app_router.dart';
@@ -66,7 +67,7 @@ void main() {
     expect(find.text('Work'), findsOneWidget);
   });
 
-  testWidgets('saving a note opened from Search returns to Search', (
+  testWidgets('editing a note opened from Search returns to Search', (
     tester,
   ) async {
     final bloc = await openSearchWithNotes(tester);
@@ -75,15 +76,22 @@ void main() {
 
     await tester.tap(find.text('Work'));
     await tester.pumpAndSettle();
-    expect(find.byType(NoteEditorScreenView), findsOneWidget);
+    expect(find.byType(NoteDetailsScreenView), findsOneWidget);
 
     await tester.tap(find.byIcon(Icons.edit_outlined));
     await tester.pumpAndSettle();
+    expect(find.byType(NoteEditorScreenView), findsOneWidget);
     await tester.enterText(find.byType(TextFormField).last, 'meeting moved');
     await tester.pump();
     await tester.tap(find.byIcon(Icons.save_outlined));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Save'));
+    await tester.pumpAndSettle();
+
+    // Back on the details screen with the new text, then back to Search.
+    expect(find.byType(NoteDetailsScreenView), findsOneWidget);
+    expect(find.text('meeting moved'), findsOneWidget);
+    await tester.tap(find.byIcon(Icons.chevron_left));
     await tester.pumpAndSettle();
 
     expect(find.byType(SearchScreenView), findsOneWidget);
