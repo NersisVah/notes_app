@@ -65,12 +65,106 @@ class HomeScreenView extends StatelessWidget {
     );
   }
 
+  BoxConstraints _bottomSheetConstraints(BuildContext context) =>
+      BoxConstraints(
+        maxHeight:
+            MediaQuery.sizeOf(context).height *
+            AppSizes.bottomSheetMaxHeightFactor,
+      );
+
+  /// One feature in the info sheet: an icon tile, a title and a short line.
+  Widget _infoRow(IconData icon, String title, String description) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(AppSizes.paddingSmall),
+          decoration: BoxDecoration(
+            color: AppColors.scaffoldBackground,
+            borderRadius: BorderRadius.circular(AppSizes.radiusMedium),
+          ),
+          child: Icon(icon, color: AppColors.primary),
+        ),
+        const SizedBox(width: AppSizes.paddingMedium),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              StyledText(title, size: AppTextSize.small),
+              StyledText(
+                description,
+                size: AppTextSize.small,
+                color: AppColors.grey,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _showInfoSheet(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      constraints: _bottomSheetConstraints(context),
+      builder: (_) => SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(
+            AppSizes.paddingLarge,
+            0,
+            AppSizes.paddingLarge,
+            AppSizes.paddingLarge,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const StyledText('Welcome to Notes', size: AppTextSize.medium),
+              const SizedBox(height: AppSizes.paddingSmall),
+              const StyledText(
+                'A simple place to keep your thoughts.',
+                size: AppTextSize.small,
+                color: AppColors.grey,
+              ),
+              const SizedBox(height: AppSizes.paddingLarge),
+              _infoRow(
+                Icons.add,
+                'Create notes',
+                'Give each note a title and write anything in the body.',
+              ),
+              const SizedBox(height: AppSizes.paddingMedium),
+              _infoRow(
+                Icons.star,
+                'Keep favorites close',
+                'Swipe a note to the right and tap the star.',
+              ),
+              const SizedBox(height: AppSizes.paddingMedium),
+              _infoRow(
+                Icons.edit_outlined,
+                'Change them anytime',
+                'Open a note and tap the pencil to update it.',
+              ),
+              const SizedBox(height: AppSizes.paddingMedium),
+              _infoRow(
+                Icons.search,
+                'Find them fast',
+                'Search by any word in a title or body.',
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   void _showSortSheet(BuildContext context) {
     final cubit = context.read<HomeScreenCubit>();
     final current = cubit.state.sortBy;
 
     showModalBottomSheet<void>(
       context: context,
+      constraints: _bottomSheetConstraints(context),
       builder: (sheetContext) {
         Widget option(String label, NotesSortBy sortBy) => ListTile(
           title: StyledText(label, size: AppTextSize.small),
@@ -114,8 +208,7 @@ class HomeScreenView extends StatelessWidget {
           ),
           IconButton(
             icon: const Icon(Icons.info_outline),
-            // TODO: show the "how to use" bottom sheet
-            onPressed: () {},
+            onPressed: () => _showInfoSheet(context),
           ),
         ],
       ),

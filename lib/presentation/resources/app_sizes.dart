@@ -21,4 +21,6 @@ class AppSizes {
 
   static const double noteCardActionWidth = 80;
   static const double noteCardElevation = 2;
+
+  static const double bottomSheetMaxHeightFactor = 0.8;
 }
