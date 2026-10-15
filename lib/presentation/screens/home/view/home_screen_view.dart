@@ -30,6 +30,7 @@ class HomeScreenView extends StatelessWidget {
       context,
       message: 'Delete this note?',
       confirmLabel: 'Delete',
+      isDelete: true,
     );
     if (confirmed && context.mounted) {
       context.read<NotesBloc>().add(NoteDeleted(note.id));

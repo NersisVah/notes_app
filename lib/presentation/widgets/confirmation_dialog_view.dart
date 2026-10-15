@@ -6,24 +6,28 @@ import 'styled_text.dart';
 
 /// Yes/no dialog for saving, deleting or leaving without saving.
 ///
-/// Use [show], which resolves to `true` only when the user confirms.
+/// Use [show], which resolves to `true` only when the user confirms. The
+/// confirm button is red when [isDelete] is true, primary otherwise.
 class ConfirmationDialogView extends StatelessWidget {
   const ConfirmationDialogView({
     super.key,
     required this.message,
     required this.confirmLabel,
     required this.cancelLabel,
+    required this.isDelete,
   });
 
   final String message;
   final String confirmLabel;
   final String cancelLabel;
+  final bool isDelete;
 
   static Future<bool> show(
     BuildContext context, {
     required String message,
     required String confirmLabel,
     String cancelLabel = 'Cancel',
+    bool isDelete = false,
   }) async {
     final confirmed = await showDialog<bool>(
       context: context,
@@ -31,6 +35,7 @@ class ConfirmationDialogView extends StatelessWidget {
         message: message,
         confirmLabel: confirmLabel,
         cancelLabel: cancelLabel,
+        isDelete: isDelete,
       ),
     );
     return confirmed ?? false;
@@ -61,7 +66,8 @@ class ConfirmationDialogView extends StatelessWidget {
                 Expanded(
                   child: _DialogButton(
                     label: cancelLabel,
-                    color: AppColors.red,
+                    color: AppColors.secondaryBackground,
+                    labelColor: AppColors.white,
                     onPressed: () => Navigator.of(context).pop(false),
                   ),
                 ),
@@ -69,7 +75,10 @@ class ConfirmationDialogView extends StatelessWidget {
                 Expanded(
                   child: _DialogButton(
                     label: confirmLabel,
-                    color: AppColors.green,
+                    color: isDelete ? AppColors.red : AppColors.primary,
+                    labelColor: isDelete
+                        ? AppColors.white
+                        : AppColors.scaffoldBackground,
                     onPressed: () => Navigator.of(context).pop(true),
                   ),
                 ),
@@ -86,11 +95,13 @@ class _DialogButton extends StatelessWidget {
   const _DialogButton({
     required this.label,
     required this.color,
+    required this.labelColor,
     required this.onPressed,
   });
 
   final String label;
   final Color color;
+  final Color labelColor;
   final VoidCallback onPressed;
 
   @override
@@ -98,13 +109,13 @@ class _DialogButton extends StatelessWidget {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: color,
-        foregroundColor: AppColors.white,
+        foregroundColor: labelColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
         ),
       ),
       onPressed: onPressed,
-      child: StyledText(label, size: AppTextSize.small, color: AppColors.white),
+      child: StyledText(label, size: AppTextSize.small, color: labelColor),
     );
   }
 }
