@@ -90,6 +90,8 @@ class ThemeManager {
 
   static InputDecorationTheme _inputDecorationTheme() {
     return InputDecorationTheme(
+      labelStyle: const TextStyle(color: AppColors.grey),
+      floatingLabelStyle: const TextStyle(color: AppColors.grey),
       enabledBorder: _inputBorder(
         AppColors.secondaryBackground,
         AppSizes.borderWidth,

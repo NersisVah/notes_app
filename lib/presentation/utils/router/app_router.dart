@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
@@ -7,6 +6,8 @@ import '../../screens/home/view/home_screen_view.dart';
 import '../../screens/home/view_model/home_screen_cubit.dart';
 import '../../screens/note_editor/view/note_editor_screen_view.dart';
 import '../../screens/note_editor/view_model/note_editor_cubit.dart';
+import '../../screens/search/view/search_screen_view.dart';
+import '../../screens/search/view_model/search_screen_cubit.dart';
 import 'app_routes.dart';
 
 class AppRouter {
@@ -24,8 +25,10 @@ class AppRouter {
       ),
       GoRoute(
         path: AppRoutes.search,
-        // TODO: replace with SearchPage
-        builder: (context, state) => const _PlaceholderPage('Search'),
+        builder: (context, state) => BlocProvider<SearchScreenCubit>(
+          create: (_) => SearchScreenCubit(),
+          child: const SearchScreenView(),
+        ),
       ),
       GoRoute(
         path: AppRoutes.note,
@@ -45,15 +48,4 @@ class AppRouter {
       ),
     ],
   );
-}
-
-class _PlaceholderPage extends StatelessWidget {
-  const _PlaceholderPage(this.title);
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text(title)));
-  }
 }

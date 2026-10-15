@@ -1,7 +1,7 @@
 class AppFontSizes {
   AppFontSizes._();
 
-  static const double large = 32;
-  static const double medium = 24;
-  static const double small = 18;
+  static const double large = 28;
+  static const double medium = 22;
+  static const double small = 16;
 }

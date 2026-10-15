@@ -77,10 +77,13 @@ class HomeScreenView extends StatelessWidget {
           trailing: sortBy == current
               ? const Icon(Icons.check, color: AppColors.primary)
               : null,
-          onTap: () {
-            cubit.sortChanged(sortBy);
-            Navigator.of(sheetContext).pop();
-          },
+          // The current option does nothing: no ripple, no event, sheet stays.
+          onTap: sortBy == current
+              ? null
+              : () {
+                  cubit.sortChanged(sortBy);
+                  Navigator.of(sheetContext).pop();
+                },
         );
 
         return SafeArea(
@@ -123,10 +126,8 @@ class HomeScreenView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
-              padding: const EdgeInsets.only(
-                left: AppSizes.paddingLarge,
-                right: AppSizes.paddingLarge,
-                top: AppSizes.paddingMedium,
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSizes.paddingLarge,
               ),
               child: BlocBuilder<HomeScreenCubit, HomeScreenState>(
                 buildWhen: (previous, current) =>
@@ -155,13 +156,13 @@ class HomeScreenView extends StatelessWidget {
                 ),
               ),
             ),
+            const SizedBox(height: AppSizes.paddingMedium),
             Expanded(
               child: BlocBuilder<HomeScreenCubit, HomeScreenState>(
                 builder: (context, homeState) =>
                     BlocBuilder<NotesBloc, NotesState>(
                       builder: (context, notesState) {
                         final notes = homeState.visibleNotes(notesState.notes);
-
                         if (notes.isEmpty) {
                           return Center(
                             child: StyledText(
@@ -177,7 +178,13 @@ class HomeScreenView extends StatelessWidget {
                         final hintNoteId = _takeHintNoteId(notes.first.id);
 
                         return ListView.separated(
-                          padding: const EdgeInsets.all(AppSizes.paddingLarge),
+                          padding: EdgeInsets.fromLTRB(
+                            AppSizes.paddingLarge,
+                            0,
+                            AppSizes.paddingLarge,
+                            AppSizes.floatingActionButtonClearance +
+                                MediaQuery.paddingOf(context).bottom,
+                          ),
                           itemCount: notes.length,
                           separatorBuilder: (_, _) =>
                               const SizedBox(height: AppSizes.paddingSmall),

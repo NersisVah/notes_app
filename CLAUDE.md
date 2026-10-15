@@ -23,6 +23,8 @@ dart run build_runner build --delete-conflicting-outputs   # after changing any 
 
 Generated `*.g.dart` files are committed. Regenerate them, never edit them by hand.
 
+Widget tests that pump `NoteApp` set `HydratedBloc.storage = MemoryStorage()` (`test/helpers/memory_storage.dart`) and call `AppRouter.router.go(AppRoutes.home)` first: the router is a single static instance, so it keeps the previous test's location.
+
 ## Architecture
 
 `lib/` is split into `core/`, `data/`, `domain/`, `presentation/`. In practice, persistence is **HydratedBloc only**: there are no repositories, use cases or data sources, so don't add them.
@@ -31,7 +33,7 @@ Generated `*.g.dart` files are committed. Regenerate them, never edit them by ha
 - **`presentation/global_blocs/notes/`**: `NotesBloc extends HydratedBloc`, the single source of truth for notes. Events and state are `part` files of `notes_bloc.dart`, so the generated `notes_bloc.g.dart` serializes `NotesState`, which persists only `notes`. View preferences such as the Home filter and sort order are not persisted; they live in the screen's cubit (`HomeScreenCubit`, which filters and sorts with `HomeScreenState.visibleNotes`).
 - **`main.dart`**: initializes `HydratedBloc.storage`, using the documents directory, or web storage on web.
 - **`presentation/app.dart`**: `NoteApp` wraps `MaterialApp.router` in `BlocProvider<NotesBloc>`, so the bloc is global to every route.
-- **`presentation/utils/router/`**: `AppRoutes` holds the path constants and `AppRouter.router` the go_router config. Routes without a real screen yet use `_PlaceholderPage` with a TODO. `/note` serves both create and edit: no `id` query parameter means create (`AppRoutes.note` / `AppRoutes.noteById(id)`).
+- **`presentation/utils/router/`**: `AppRoutes` holds the path constants and `AppRouter.router` the go_router config. `/note` serves both create and edit: no `id` query parameter means create (`AppRoutes.note` / `AppRoutes.noteById(id)`).
 - **`presentation/utils/theme/theme_manager.dart`**: `ThemeManager.getTheme()` (static) is the single place for styling: color scheme, AppBar, IconButton and text theme. Prefer theme-level styling over styling individual widgets.
 - **`presentation/resources/`**: `AppColors`, `AppFontSizes` (small/medium/large), `AppSizes` (padding/radius small/medium/large). These are non-instantiable classes of `static const` values. Use them; don't hard-code values.
 - **`presentation/screens/<screen>/`**: one folder per screen, split like this:
@@ -39,6 +41,21 @@ Generated `*.g.dart` files are committed. Regenerate them, never edit them by ha
   - `view_model/`: the screen's own Cubit/Bloc and its state, used for screen-local UI state such as the note editor's view/edit mode. Data that outlives the screen belongs in the global `NotesBloc`. The router creates the cubit with a `BlocProvider` around the screen view.
   - `components/`: custom widgets used only by this screen. Create it only when such a widget exists. Widgets shared between screens go in `presentation/widgets/`.
 - **`presentation/widgets/`**: shared widgets. `StyledText(text, size: AppTextSize.small|medium|large)` is the text widget to use. It maps sizes to the theme's `bodyMedium`/`titleMedium`/`titleLarge`, which come from `AppFontSizes`.
+
+## Spacing and radii
+
+Every padding, gap and radius comes from `AppSizes`; never hard-code numbers. Spacing follows three rules, one per size:
+
+- **`paddingLarge` (24): distance from an edge.** Screen sides on every screen (AppBar title/leading padding, theme `actionsPadding`, top rows, lists, note form, `NoteContentView`), padding inside a dialog, and a list's bottom padding (on a screen with a floating action button, `floatingActionButtonClearance + MediaQuery.paddingOf(context).bottom` instead).
+- **`paddingMedium` (16): vertical gap between stacked parts.** Status bar → top row on a screen without an AppBar, top row → list, title → body, icon → message → buttons in a dialog. Also the inner padding of controls: note card all around, pills horizontally.
+- **`paddingSmall` (8): gap between neighbours.** Controls next to each other in a row (back button → search field, filter pills, dialog buttons, icons inside a card), between list items (never after the last one), and pills vertically.
+
+Layout details that keep those rules true:
+- The AppBar theme sets `titleSpacing: 0`, so a title or leading widget gets its own `Padding(left: paddingLarge)`. A padded leading button also needs `leadingWidth: paddingLarge + kMinInteractiveDimension` and a `Center`.
+- A screen without an AppBar (Search) puts its top row in the body inside a `SafeArea` that keeps `top`.
+- The top row → list gap is a fixed `SizedBox` outside the list, and the list's own top padding is 0, so scrolled items never touch the row.
+
+**Radii:** `radiusSmall` for dialog buttons; `radiusMedium` for note cards and text field borders; `radiusLarge` for icon buttons, pills, dialogs and the top of bottom sheets.
 
 ## Conventions
 

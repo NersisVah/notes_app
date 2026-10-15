@@ -60,7 +60,7 @@ class ConfirmationDialogView extends StatelessWidget {
               size: AppTextSize.small,
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: AppSizes.paddingLarge),
+            const SizedBox(height: AppSizes.paddingMedium),
             Row(
               children: [
                 Expanded(
@@ -71,7 +71,7 @@ class ConfirmationDialogView extends StatelessWidget {
                     onPressed: () => Navigator.of(context).pop(false),
                   ),
                 ),
-                const SizedBox(width: AppSizes.paddingMedium),
+                const SizedBox(width: AppSizes.paddingSmall),
                 Expanded(
                   child: _DialogButton(
                     label: confirmLabel,

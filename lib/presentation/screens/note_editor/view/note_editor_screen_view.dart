@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../global_blocs/notes/notes_bloc.dart';
 import '../../../resources/app_sizes.dart';
-import '../../../utils/router/app_routes.dart';
 import '../../../widgets/confirmation_dialog_view.dart';
 import '../../../widgets/note_content_view.dart';
 import '../components/note_form_view.dart';
@@ -46,7 +45,8 @@ class NoteEditorScreenView extends StatelessWidget {
           ? NoteAdded(title: state.title, body: state.body)
           : NoteUpdated(id: id, title: state.title, body: state.body),
     );
-    context.go(AppRoutes.home);
+    // Returns to the screen that opened the editor (Home or Search).
+    context.pop();
   }
 
   @override

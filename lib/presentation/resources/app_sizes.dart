@@ -17,6 +17,8 @@ class AppSizes {
 
   static const double floatingActionButtonIconShadowBlurRadius = 12;
 
+  static const double floatingActionButtonClearance = 56;
+
   static const double noteCardActionWidth = 80;
   static const double noteCardElevation = 2;
 }
