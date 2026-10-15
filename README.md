@@ -4,6 +4,11 @@
 
 - This application is a test task for the Middle Flutter Developer position.
 
+## Presentation Video
+
+- Watch the app walkthrough
+  on [Google Drive](https://drive.google.com/file/d/1rXp3xLnXssNtxVK3du5oTEic-IFsYcGd/view?usp=sharing).
+
 ## How to Run the Application
 
 - Make sure you have Flutter installed. You can follow
