@@ -145,4 +145,28 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(SearchScreenView), findsOneWidget);
   });
+
+  testWidgets('the + button stays in place while the keyboard closes', (
+    tester,
+  ) async {
+    await pumpNotesApp(tester, notes: notes);
+    // A phone with a 34 px home indicator, like an iPhone.
+    tester.view.padding = const FakeViewPadding(bottom: 34);
+    tester.view.viewPadding = const FakeViewPadding(bottom: 34);
+    await tester.pump();
+    final restingTop = tester.getTopLeft(find.byType(FloatingActionButton)).dy;
+
+    // The keyboard is still open (e.g. when coming back from Search) and then
+    // slides down. While it's on screen the home indicator is hidden behind it.
+    for (final keyboard in [300.0, 150.0, 20.0, 0.0]) {
+      tester.view.viewInsets = FakeViewPadding(bottom: keyboard);
+      tester.view.padding = FakeViewPadding(bottom: keyboard > 0 ? 0 : 34);
+      await tester.pump();
+      expect(
+        tester.getTopLeft(find.byType(FloatingActionButton)).dy,
+        restingTop,
+        reason: 'keyboard height $keyboard',
+      );
+    }
+  });
 }
