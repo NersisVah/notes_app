@@ -65,6 +65,10 @@ class ThemeManager {
   static DialogThemeData _dialogTheme() {
     return DialogThemeData(
       backgroundColor: AppColors.scaffoldBackground,
+      constraints: const BoxConstraints(
+        minWidth: AppSizes.dialogMinWidth,
+        maxWidth: AppSizes.dialogMaxWidth,
+      ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppSizes.radiusLarge),
       ),

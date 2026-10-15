@@ -65,6 +65,7 @@ Layout details that keep those rules true:
 - The AppBar theme sets `titleSpacing: 0`, so a title or leading widget gets its own `Padding(left: paddingLarge)`. A padded leading button also needs `leadingWidth: paddingLarge + kMinInteractiveDimension` and a `Center`.
 - A screen without an AppBar (Search) puts its top row in the body inside a `SafeArea` that keeps `top`.
 - The top row → list gap is a fixed `SizedBox` outside the list, and the list's own top padding is 0, so scrolled items never touch the row.
+- Dialogs are limited to `dialogMinWidth`–`dialogMaxWidth` (280–400) by the dialog theme, so they keep a pop-up size on tablets and in landscape.
 
 **Radii:** `radiusSmall` for dialog buttons; `radiusMedium` for note cards and text field borders; `radiusLarge` for icon buttons, pills, dialogs and the top of bottom sheets.
 

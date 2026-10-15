@@ -15,6 +15,9 @@ class AppSizes {
   static const double floatingActionButtonIconSize = 36;
   static const double dialogIconSize = 36;
 
+  static const double dialogMinWidth = 280;
+  static const double dialogMaxWidth = 400;
+
   static const double floatingActionButtonIconShadowBlurRadius = 12;
 
   static const double floatingActionButtonClearance = 56;
