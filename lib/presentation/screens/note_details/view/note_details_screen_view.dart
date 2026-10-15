@@ -9,6 +9,7 @@ import '../../../resources/app_sizes.dart';
 import '../../../utils/router/app_routes.dart';
 import '../../../widgets/confirmation_dialog_view.dart';
 import '../../../widgets/note_content_view.dart';
+import '../../../widgets/styled_text.dart';
 
 /// Read-only note with edit, favorite and delete actions. Reads the note
 /// from [NotesBloc], so edits and favorite changes show right away.
@@ -16,6 +17,14 @@ class NoteDetailsScreenView extends StatelessWidget {
   const NoteDetailsScreenView({super.key, required this.noteId});
 
   final String noteId;
+
+  /// For example "15.10.2026 14:05", in the phone's local time.
+  String _formatDate(DateTime date) {
+    String twoDigits(int value) => value.toString().padLeft(2, '0');
+    final local = date.toLocal();
+    return '${twoDigits(local.day)}.${twoDigits(local.month)}.${local.year} '
+        '${twoDigits(local.hour)}:${twoDigits(local.minute)}';
+  }
 
   NoteModel? _findNote(NotesState state) =>
       state.notes.where((note) => note.id == noteId).firstOrNull;
@@ -75,7 +84,25 @@ class NoteDetailsScreenView extends StatelessWidget {
           bottom: false,
           child: note == null
               ? const SizedBox.shrink()
-              : NoteContentView(title: note.title, body: note.body),
+              : NoteContentView(
+                  title: note.title,
+                  body: note.body,
+                  footer: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      StyledText(
+                        'Created at: ${_formatDate(note.createdAt)}',
+                        size: AppTextSize.small,
+                        color: AppColors.grey,
+                      ),
+                      StyledText(
+                        'Updated at: ${_formatDate(note.updatedAt)}',
+                        size: AppTextSize.small,
+                        color: AppColors.grey,
+                      ),
+                    ],
+                  ),
+                ),
         ),
       ),
     );

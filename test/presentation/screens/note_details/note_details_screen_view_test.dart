@@ -39,6 +39,8 @@ void main() {
     expect(find.text('milk and eggs'), findsOneWidget);
     expect(find.byType(TextFormField), findsNothing);
     expect(find.byIcon(Icons.save_outlined), findsNothing);
+    expect(find.textContaining('Created at: '), findsOneWidget);
+    expect(find.textContaining('Updated at: '), findsOneWidget);
   });
 
   testWidgets('favorite button toggles the favorite', (tester) async {
