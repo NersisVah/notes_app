@@ -17,13 +17,15 @@ flutter analyze                      # lints: package:flutter_lints/flutter.yaml
 flutter test
 flutter test test/path/to_test.dart  # single file
 flutter test --plain-name "name"     # single test by name
+flutter test --exclude-tags golden   # skip golden image tests
+flutter test --update-goldens test/golden   # regenerate golden images after an intended UI change
 dart format lib test
 dart run build_runner build --delete-conflicting-outputs   # after changing any @JsonSerializable class
 ```
 
 Generated `*.g.dart` files are committed. Regenerate them, never edit them by hand.
 
-Widget tests that pump `NoteApp` set `HydratedBloc.storage = MemoryStorage()` (`test/helpers/memory_storage.dart`) and call `AppRouter.router.go(AppRoutes.home)` first: the router is a single static instance, so it keeps the previous test's location.
+Tests are grouped by type (see `test/README.md`): `test/unit/` and `test/widget/presentation/` mirror `lib/`; `test/widget/flows/` holds the cross-screen state-management flow; `test/golden/<screen>/goldens/<state>/w<width>_x<scale>.png` are committed images (Home list, note details). Start the app with `pumpNotesApp` (`test/helpers/notes_app_harness.dart`), build notes with `testNote`, and check bloc/cubit emissions with `statesEmittedBy` (package:bloc_test can't be installed next to json_serializable/build_runner). Goldens use the fonts in `test/fonts/` and `withRealShadows`. The router is a single static instance, so `pumpNotesApp` sends it to Home first.
 
 ## Architecture
 
